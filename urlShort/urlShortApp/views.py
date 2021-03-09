@@ -17,21 +17,22 @@ def urlApi(request, shrt_url):
     except:
         raise Http404()
 
-def shortenUrl(request, long_url):
-    if request.method == 'GET':
-        try:
-            count = requests.get(count_url)
-            salted_url = '{}{}'.format(count.text, long_url)
-            hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
-            shortened_url = ShortUrl(fullUrl=long_url, hashedUrl=hashed_url).save()
-            return HttpResponse("You're looking at url %s.      hash: %s" % (salted_url, hashed_url))
-        except shortened_url.DoesNotExist as exception:
-            raise Http404() from exception
-    
+def shortenUrl(request):
     if request.method == 'POST':
+        print(request.POST)
         form = FullUrlForm(request.POST)
         if form.is_valid():
-            return HttpResponse('posted')
+            full_url = form.cleaned_data['full_url']
+            try:
+                count = requests.get(count_url)
+                salted_url = '{}{}'.format(count.text, full_url)
+                hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
+                shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url).save()
+                return HttpResponse("You're looking at url %s.      hash: %s" % (salted_url, hashed_url))
+            except shortened_url.DoesNotExist as exception:
+                raise Http404() from exception
+    else:
+        form = FullUrlForm()
     
-    return render(request, 'shortener_form.html', {'form': form})
-    # return HttpResponse("You'r shorten URL is: %s" % long_url)
+    return render(request, 'urlShortApp/shortener_form.html', {'form': form})
+    
