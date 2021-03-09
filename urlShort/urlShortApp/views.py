@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse, Http404
 from .models import ShortUrl
 import requests
@@ -24,8 +21,8 @@ def shortenUrl(request, long_url):
         count = requests.get(count_url)
         salted_url = '{}{}'.format(count.text, long_url)
         hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
-        ShortUrl(fullUrl=long_url, hashedUrl=hashed_url).save()
+        shortened_url = ShortUrl(fullUrl=long_url, hashedUrl=hashed_url).save()
         return HttpResponse("You're looking at url %s.      hash: %s" % (salted_url, hashed_url))
-    except:
-        raise Http404() 
+    except shortened_url.DoesNotExist as exception:
+        raise Http404() from exception
     # return HttpResponse("You'r shorten URL is: %s" % long_url)
