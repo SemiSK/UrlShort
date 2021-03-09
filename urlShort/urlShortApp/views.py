@@ -1,7 +1,7 @@
+import hashlib
+import requests
 from django.http import HttpResponse, Http404
 from .models import ShortUrl
-import requests
-import hashlib 
 
 count_url = 'http://127.0.0.1:8000/count/'
 
