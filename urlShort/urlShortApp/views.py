@@ -1,7 +1,7 @@
 import hashlib
 import requests
-from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.shortcuts import render, reverse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import ShortUrl
 from .forms import FullUrlForm
 
@@ -13,7 +13,8 @@ def index(request):
 def urlApi(request, shrt_url):
     try:
         longUrl = ShortUrl.objects.get(hashedUrl=shrt_url).fullUrl
-        return HttpResponse("You're looking at url %s." % longUrl)
+        return HttpResponseRedirect(longUrl)
+        # return HttpResponse("You're looking at url %s." % longUrl)
     except:
         raise Http404()
 
@@ -28,7 +29,9 @@ def shortenUrl(request):
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
                 shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url).save()
-                return HttpResponse("You're looking at url %s.      hash: %s" % (salted_url, hashed_url))
+                full_base_url = request.build_absolute_uri(reverse('index'))
+                full_short_url = full_base_url + hashed_url
+                return HttpResponse("You'r short url is:  %s" % full_short_url)
             except shortened_url.DoesNotExist as exception:
                 raise Http404() from exception
     else:
