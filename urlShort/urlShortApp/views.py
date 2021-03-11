@@ -4,8 +4,13 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import ShortUrl
 from .forms import FullUrlForm
+from django.utils import timezone
+import datetime
+
 
 count_url = 'http://127.0.0.1:8000/count/'
+
+expiry_delta = datetime.timedelta(days=21)
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -28,7 +33,8 @@ def shortenUrl(request):
                 count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
-                shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url).save()
+                expiry_date = timezone.now() + expiry_delta
+                shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url, expire_date= expiry_date).save()
                 full_base_url = request.build_absolute_uri(reverse('index'))
                 full_short_url = full_base_url + hashed_url
                 return render(request, 'urlShortApp/short_url.html', {'full_short_url': full_short_url})

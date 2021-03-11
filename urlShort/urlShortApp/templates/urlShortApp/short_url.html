@@ -1,11 +1,12 @@
 {% extends "urlShortApp/base.html" %}
 {% block content %}
 {% load static %}
-<main class="form-signin">
+<main class="form-signin shadow p-3 bg-white rounded">
     <div class="short_url">
-        <img class="mb-4" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
+        <img class="mb-4 logo" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">Your shortened URL is:</h1>
-        <a class="shadow p-3 mb-5 bg-white rounded" href="{{ full_short_url }}">{{ full_short_url }}</a>   
+        <a href="{{ full_short_url }}">{{ full_short_url }}</a>  
+        <button class="w-100 btn btn-lg btn-primary" onclick="window.history.back()">Go back</button>
     </div>
 </main>
 {% endblock %}

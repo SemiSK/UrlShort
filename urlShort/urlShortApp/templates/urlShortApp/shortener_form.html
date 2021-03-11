@@ -1,10 +1,10 @@
 {% extends "urlShortApp/base.html" %}
 {% block content %}
 {% load static %}
-<main class="form-signin">
+<main class="form-signin shadow p-3 bg-white rounded">
     <form action={% url 'shortenUrl' %} method="post">
         {% csrf_token %}
-        <img class="mb-4" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
+        <img class="mb-4 logo" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">Fill your full url below to recive a short url:</h1>
 
         {% for field in form %}
