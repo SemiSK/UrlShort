@@ -1,7 +1,11 @@
 {% extends "urlShortApp/base.html" %}
-
 {% block content %}
-<div class="short_url">
-    <a href="{{ full_short_url }}">{{ full_short_url }}</a>   
-</div>
+{% load static %}
+<main class="form-signin">
+    <div class="short_url">
+        <img class="mb-4" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Your shortened URL is:</h1>
+        <a class="shadow p-3 mb-5 bg-white rounded" href="{{ full_short_url }}">{{ full_short_url }}</a>   
+    </div>
+</main>
 {% endblock %}

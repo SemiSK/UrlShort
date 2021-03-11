@@ -1,20 +1,21 @@
 {% extends "urlShortApp/base.html" %}
 {% block content %}
+{% load static %}
+<main class="form-signin">
+    <form action={% url 'shortenUrl' %} method="post">
+        {% csrf_token %}
+        <img class="mb-4" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Fill your full url below to recive a short url:</h1>
 
+        {% for field in form %}
+            <label class="visually-hidden" for="{{ field.auto_id }}">{{ field.label }}</label>
+            {{ field }}
+        {% endfor %}
 
-
-
-<form action={% url 'shortenUrl' %} method="post">
-{% csrf_token %}
-<img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-<h1 class="h3 mb-3 fw-normal">Fill your full url below to recive a short url:</h1>
-
-{% for field in form %}
-    <label class="visually-hidden" for="{{ field.auto_id }}">{{ field.label }}</label>
-    {{ field }}
-{% endfor %}
-
-<button class="w-100 btn btn-lg btn-primary" type="submit">Shorten!</button>
-</form>
-
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Shorten!</button>
+    </form>
+</main>
 {% endblock %}
+
+
+
