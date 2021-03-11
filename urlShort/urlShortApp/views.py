@@ -31,9 +31,10 @@ def shortenUrl(request):
                 shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url).save()
                 full_base_url = request.build_absolute_uri(reverse('index'))
                 full_short_url = full_base_url + hashed_url
-                return HttpResponse("You'r short url is:  %s" % full_short_url)
+                return render(request, 'urlShortApp/short_url.html', {'full_short_url': full_short_url})
             except shortened_url.DoesNotExist as exception:
-                raise Http404() from exception
+                HttpResponse("Hello, world. You're at the polls index.")
+                # raise Http404() from exception
     else:
         form = FullUrlForm()
     
