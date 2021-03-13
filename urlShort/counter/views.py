@@ -6,7 +6,7 @@ from .models import counterModel
 
 def counter_view(request):
     count_object = counterModel.objects.last()
-    if count_object is None:
+    if not count_object:
         counterModel(count=0).save()
         count_object = counterModel.objects.last()
     count = count_object.count
