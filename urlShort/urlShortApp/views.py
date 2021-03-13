@@ -30,10 +30,10 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
-                count_url = urlsplit(request.build_absolute_uri())
-                clean_path = "".join(count_url.path.rpartition("/")[:-1])
-                print(clean_path)
-                count = requests.get(clean_path)
+                request_url = urlsplit(request.build_absolute_uri())
+                clean_path = request_url.scheme + "://" + request_url.netloc
+                count_url = clean_path + '/count/'
+                count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
                 expiry_date = timezone.now() + expiry_delta
