@@ -30,15 +30,13 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
-                request_url = urlsplit(request.build_absolute_uri())
-                clean_path = request_url.scheme + "://" + request_url.netloc
-                count_url = clean_path + '/count/'
+                full_base_url = request.build_absolute_uri(reverse('index'))
+                count_url = full_base_url + '/count/'
                 count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
                 expiry_date = timezone.now() + expiry_delta
-                shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url, expire_date= expiry_date).save()
-                full_base_url = request.build_absolute_uri(reverse('index'))
+                shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url, expire_date= expiry_date).save()         
                 full_short_url = full_base_url + hashed_url
                 return render(request, 'urlShortApp/short_url.html', {'full_short_url': full_short_url})
             except shortened_url.DoesNotExist as exception:
