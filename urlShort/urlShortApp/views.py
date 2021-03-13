@@ -9,8 +9,6 @@ import datetime
 from urlShort.settings import BASE_DIR
 import os
 
-count_url = os.path.join(BASE_DIR,"count")
-
 expiry_delta = datetime.timedelta(days=21)
 
 def index(request):
@@ -31,6 +29,7 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
+                count_url = request.get_full_path() + "count"
                 count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
