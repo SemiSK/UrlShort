@@ -11,6 +11,8 @@ services:
       VIRTUAL_HOST: shrt.sergeikigel.co.il
       LETSENCRYPT_HOST: shrt.sergeikigel.co.il
       LETSENCRYPT_EMAIL: sergei.kigel@gmail.com
+    volumes:
+      - src:/src
     command: >
       sh -c "uwsgi --socket urlShort.sock --module urlShort.wsgi --chmod-socket=666 --logger file:/tmp/uwsgi.log"
 networks:
