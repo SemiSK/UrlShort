@@ -2,7 +2,7 @@ import hashlib
 import requests
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from .models import ShortUrl
+from .models import ShortUrl, CounterModel
 from .forms import FullUrlForm
 from django.utils import timezone
 import datetime
@@ -30,11 +30,17 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
+                counter = CounterModel.objects.last()
+                counter.count += 1
+                counter.save()
+                if not counter:
+                    counter = CounterModel(count= 0)
+                    counter.save()
+            except:
+                pass
+            try:
                 full_base_url = request.build_absolute_uri(reverse('index'))
-                count_url = full_base_url + 'count/'
-                print(count_url)
-                count = requests.get(count_url)
-                salted_url = '{}{}'.format(count.text, full_url)
+                salted_url = '{}{}'.format(counter.count, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
                 expiry_date = timezone.now() + expiry_delta
                 shortened_url = ShortUrl(fullUrl=full_url, hashedUrl=hashed_url, expire_date= expiry_date).save()         

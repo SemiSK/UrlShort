@@ -13,4 +13,11 @@ class ShortUrl(models.Model):
 
     def __str__(self):
         return 'Entry {}'.format(self.hashedUrl)
+
+
+class CounterModel(models.Model):
+    count = models.IntegerField('count')
+
+    def __str__(self):
+        return 'Counter Entry'
     

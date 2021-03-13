@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'counter.apps.CounterConfig',
     'urlShortApp.apps.UrlshortappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
