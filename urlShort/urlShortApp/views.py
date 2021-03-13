@@ -6,9 +6,10 @@ from .models import ShortUrl
 from .forms import FullUrlForm
 from django.utils import timezone
 import datetime
+from urlShort.settings import BASE_DIR
+import os
 
-
-count_url = 'http://127.0.0.1:8000/count/'
+count_url = os.path.join(BASE_DIR,"count")
 
 expiry_delta = datetime.timedelta(days=21)
 
