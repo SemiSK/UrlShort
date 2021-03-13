@@ -8,6 +8,7 @@ from django.utils import timezone
 import datetime
 from urlShort.settings import BASE_DIR
 import os
+from urllib.parse import urlsplit
 
 expiry_delta = datetime.timedelta(days=21)
 
@@ -29,8 +30,10 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
-                count_url = request.build_absolute_uri() + "count"
-                count = requests.get(count_url)
+                count_url = urlsplit(request.build_absolute_uri())
+                clean_path = "".join(count_url.path.rpartition("/")[:-1])
+                print(clean_path)
+                count = requests.get(clean_path)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
                 expiry_date = timezone.now() + expiry_delta
