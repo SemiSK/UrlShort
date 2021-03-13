@@ -29,7 +29,7 @@ def shortenUrl(request):
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
-                count_url = request.get_full_path() + "count"
+                count_url = request.build_absolute_uri() + "count"
                 count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
