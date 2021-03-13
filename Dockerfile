@@ -2,6 +2,7 @@ FROM ubuntu:bionic
 EXPOSE 8080
 
 RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt update
 RUN apt-get update --fix-missing
 RUN apt install -y python3.9 python3-pip nginx uwsgi vim
 
