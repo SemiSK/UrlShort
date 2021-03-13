@@ -31,7 +31,8 @@ def shortenUrl(request):
             full_url = form.cleaned_data['full_url']
             try:
                 full_base_url = request.build_absolute_uri(reverse('index'))
-                count_url = full_base_url + '/count/'
+                count_url = full_base_url + 'count/'
+                print(count_url)
                 count = requests.get(count_url)
                 salted_url = '{}{}'.format(count.text, full_url)
                 hashed_url = hashlib.md5(salted_url.encode()).hexdigest()[:7]
