@@ -1,15 +1,14 @@
 FROM ubuntu:bionic
-EXPOSE 80
+EXPOSE 8080
 
+RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update --fix-missing
-RUN apt install -y python3.7 python3-pip nginx uwsgi vim
+RUN apt install -y python3.9 python3-pip nginx uwsgi vim
 
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
-
-
 
 COPY ./mysite_nginx.conf /etc/nginx/sites-available/mysite_nginx.conf
 
@@ -22,8 +21,7 @@ RUN pwd
 
 RUN mkdir /src
 WORKDIR /src
-COPY ./start.sh /start.sh
-COPY ./src .
+COPY ./urlShort .
 
 # RUN /etc/init.d/nginx restart
 

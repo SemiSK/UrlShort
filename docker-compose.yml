@@ -2,18 +2,18 @@ version: '2'
 
 services:
   project:
-    container_name: site
+    container_name: shortener
     build:
       context: .
     expose:
-      - 80
+            - 8080
     environment:
       VIRTUAL_HOST: shrt.sergeikigel.co.il
       LETSENCRYPT_HOST: shrt.sergeikigel.co.il
       LETSENCRYPT_EMAIL: sergei.kigel@gmail.com
     command: >
-      sh -c "uwsgi --socket src.sock --module project.wsgi --chmod-socket=666 --logger file:/tmp/uwsgi.log"
+      sh -c "uwsgi --socket urlShort.sock --module urlShort.wsgi --chmod-socket=666 --logger file:/tmp/uwsgi.log"
 networks:
     default:
         external:
-            name: nginx-proxy
+            name: webproxy
