@@ -19,3 +19,6 @@ networks:
     default:
         external:
             name: webproxy
+
+volumes:
+  src:

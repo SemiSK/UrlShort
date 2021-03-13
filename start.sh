@@ -1,3 +1,3 @@
 #!bin/bash
 docker-compose up -d
-docker exec -it site /etc/init.d/nginx restart
+docker exec -it shortener /etc/init.d/nginx restart
