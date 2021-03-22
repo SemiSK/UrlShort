@@ -16,11 +16,26 @@
 </head>
 
 <body class="text-center">
+<div class="container">
+<nav class="row fixed-top navbar navbar-expand-lg navbar-light bg-light">
+  <ul class="sidebar-nav">
+   {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+   {% else %}
+     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+   {% endif %} 
+  </ul>
+</nav>
 
+    <main class="row form-signin shadow p-3 bg-white rounded">
     {% block content %}{% endblock %}
+    </main>
 
     <div id="footer">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     </div>
+
+</div>
 </body>
 </html>
