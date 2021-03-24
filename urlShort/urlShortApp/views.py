@@ -12,29 +12,40 @@ from urllib.parse import urlsplit
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 
-expiry_delta = datetime.timedelta(days=21)
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+expiry_delta = datetime.timedelta(days=21)              # Default lifetime of a link.
 
 def urlApi(request, shrt_url):
+    '''
+    View that handles the redirection using the shortened url.
+    '''
+
     try:
+        # Fetch url object with short hash.
         urlObject = ShortUrl.objects.get(hashedUrl=shrt_url)
+        
+        # Fetch long url from url object.
         longUrl = urlObject.fullUrl
+
+        # Increment the visitor counter.
         urlObject.clicks += 1
         urlObject.save()
+
+        print(request.META)
         return HttpResponseRedirect(longUrl)
-        # return HttpResponse("You're looking at url %s." % longUrl)
+
     except Exception as e:
         raise Http404(e)
 
 def shortenUrl(request):
+    '''
+    View that handles the url shortening.
+    '''
     if request.method == 'POST':
-        print(request.POST)
         form = FullUrlForm(request.POST)
         if form.is_valid():
             full_url = form.cleaned_data['full_url']
             try:
+                # Increment the salt counter.
                 counter = CounterModel.objects.last()
                 counter.count += 1
                 counter.save()
@@ -43,6 +54,7 @@ def shortenUrl(request):
                     counter.save()
             except:
                 pass
+            
             try:
                 # Build parameters for the ShortUrl object.
                 full_base_url = request.build_absolute_uri(reverse('index'))
@@ -61,16 +73,22 @@ def shortenUrl(request):
                 
                 # return rendered page with shortened url.
                 return render(request, 'urlShortApp/short_url.html', {'full_short_url': full_short_url})
+            
             except shortened_url.DoesNotExist as exception:
                 HttpResponse("Hello, world. You're at the polls index.")
-                # raise Http404() from exception
+
     else:
+        # If not POST request set form to empty form object.
         form = FullUrlForm()
     
+    # Render form page.
     return render(request, 'urlShortApp/shortener_form.html', {'form': form})
 
 @login_required
 def userProfile(request):
+    '''
+    Handles the user profile view.
+    '''
     if request.method == 'GET':
         # Get all urls for user as list.
         user_urls = list(ShortUrl.objects.filter(owner=request.user).values())

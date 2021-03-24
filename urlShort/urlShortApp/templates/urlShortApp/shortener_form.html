@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 
-<form action={% url 'shortenUrl' %} method="post">
+<form action={% url 'index' %} method="post">
     {% csrf_token %}
     <img class="mb-4 logo" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
     <h1 class="h3 mb-3 fw-normal">Fill your full url below to recive a short url:</h1>

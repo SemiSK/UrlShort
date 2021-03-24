@@ -17,16 +17,18 @@
 
 <body class="text-center">
 <div class="container">
-<nav class="row fixed-top navbar navbar-expand-lg navbar-light bg-light">
-  <ul class="sidebar-nav">
-   {% if user.is_authenticated %}
-     <li>User: {{ user.get_username }}</li>
-     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-   {% else %}
-     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-   {% endif %} 
-  </ul>
-</nav>
+    <nav class="row fixed-top navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="list-group list-group-horizontal list-unstyled">
+            <li class="nav-item"><a class='nav-link' href="{% url 'index' %}">Home Page</a></li>
+        {% if user.is_authenticated %}
+            <li>User: {{ user.get_username }}</li>
+            <li class="nav-item"><a class='nav-link' href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
+        {% else %}
+            <li class="nav-item"><a class='nav-link' href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+        {% endif %} 
+            <li class="nav-item"><a class='nav-link' href="{% url 'userProfile' %}">Profile</a></li>
+        </ul>
+    </nav>
 
     <main class="row form-signin shadow p-3 bg-white rounded">
     {% block content %}{% endblock %}
