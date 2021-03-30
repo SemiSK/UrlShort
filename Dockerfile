@@ -22,8 +22,6 @@ RUN pwd
 
 RUN mkdir /src
 WORKDIR /src
-COPY ./urlShort .
-
 # RUN /etc/init.d/nginx restart
 
 # RUN uwsgi --socket src.sock --module SababaBeach.wsgi --chmod-socket=666

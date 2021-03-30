@@ -1,3 +1,4 @@
 urlShort/**/__pycache__/
 urlShort/db.sqlite3
 urlShort/db.sqlite3-journal
+urlShort/static/
