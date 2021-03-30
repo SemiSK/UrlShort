@@ -1,0 +1,44 @@
+{% extends "urlShortApp/base.html" %}
+{% block content %}
+{% load static %}
+
+<div style="overflow-x:auto;">
+<table class="table">
+  <thead>
+    <tr>
+    {% for title in titles %}
+      <th scope="col">{{title}}</th>
+    {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+        {% for item in row %}
+            {% if forloop.first %}
+            <th scope="row">{{item}}</th>
+            {% else %}
+            <td>{{item}}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% comment %} {% for url in user_urls %}
+    {% for title, item in url.items %}
+        {{title}}
+        {{item}}
+    {% endfor %}
+{% endfor %} {% endcomment %}
+
+{% comment %} <div class="short_url">
+    <img class="mb-4 logo" src={% static "urlShortApp/img/logo.png" %} alt="" width="72" height="72">
+    <h1 class="h3 mb-3 fw-normal">Your shortened URL is:</h1>
+    <a href="{{ full_short_url }}">{{ full_short_url }}</a>  
+    <button class="w-100 btn btn-lg btn-primary" onclick="window.history.back()">Go back</button>
+</div> {% endcomment %}
+
+{% endblock %}

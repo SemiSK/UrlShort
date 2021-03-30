@@ -16,8 +16,7 @@
 </head>
 
 <body class="text-center">
-<div class="container">
-    <nav class="row fixed-top navbar navbar-expand-lg navbar-light bg-light">
+<nav class="row fixed-top navbar navbar-expand-lg navbar-light bg-light">
         <ul class="list-group list-group-horizontal list-unstyled">
             <li class="nav-item"><a class='nav-link' href="{% url 'index' %}">Home Page</a></li>
         {% if user.is_authenticated %}
@@ -28,9 +27,9 @@
         {% endif %} 
             <li class="nav-item"><a class='nav-link' href="{% url 'userProfile' %}">Profile</a></li>
         </ul>
-    </nav>
+</nav>
 
-    <main class="row form-signin shadow p-3 bg-white rounded">
+    <main class="container form-signin shadow p-3 bg-white rounded">
     {% block content %}{% endblock %}
     </main>
 
@@ -38,6 +37,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     </div>
 
-</div>
 </body>
 </html>

@@ -11,6 +11,7 @@ import os
 from urllib.parse import urlsplit
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from pprint import pprint
 
 expiry_delta = datetime.timedelta(days=21)              # Default lifetime of a link.
 
@@ -30,7 +31,8 @@ def urlApi(request, shrt_url):
         urlObject.clicks += 1
         urlObject.save()
 
-        print(request.META)
+        pprint(request.META)
+        # Redirect to full url.
         return HttpResponseRedirect(longUrl)
 
     except Exception as e:
@@ -41,17 +43,26 @@ def shortenUrl(request):
     View that handles the url shortening.
     '''
     if request.method == 'POST':
+        # Get form data from POST request.
         form = FullUrlForm(request.POST)
+
+        # Validate form.
         if form.is_valid():
+            # Get full url from form.
             full_url = form.cleaned_data['full_url']
             try:
-                # Increment the salt counter.
+                # Get counter.
                 counter = CounterModel.objects.last()
-                counter.count += 1
-                counter.save()
+
+                #Create counter if does not exist.
                 if not counter:
                     counter = CounterModel(count= 0)
                     counter.save()
+
+                # Increment the salt counter.
+                counter.count += 1
+                counter.save()
+                
             except:
                 pass
             
@@ -92,6 +103,21 @@ def userProfile(request):
     if request.method == 'GET':
         # Get all urls for user as list.
         user_urls = list(ShortUrl.objects.filter(owner=request.user).values())
+        
+        # Remove owner_id from query.
+        for val in user_urls:
+            val.pop('owner_id', None)
 
-        # TODO Change to template render
-        return JsonResponse({'data': user_urls})
+        # Prepare table titles and rows from query.
+        titles = list(user_urls[0].keys())
+        rows = []
+        for url in user_urls:
+            row = [url[k] for k in titles]
+            rows.append(row)
+
+        # Render template with table.
+        return render(request, 'urlShortApp/user_profile.html', {
+            'user_urls': user_urls,
+            'titles': titles,
+            'rows': rows,
+            })
